@@ -1,5 +1,6 @@
 import 'package:crictalk/screens/home.dart';
 import 'package:crictalk/screens/login.dart';
+import 'package:crictalk/screens/newTopic.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,18 +25,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StreamBuilder<User?>(
-        stream: _auth.authStateChanges(),
-        builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          } else if (snapshot.hasData) {
-            return const HomeScreen();
-          } else {
-            return const LoginScreen();
-          }
-        },
-      ),
+      // home: StreamBuilder<User?>(
+      //   stream: _auth.authStateChanges(),
+      //   builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const CircularProgressIndicator();
+      //     } else if (snapshot.hasData) {
+      //       return const HomeScreen();
+      //     } else {
+      //       return const LoginScreen();
+      //     }
+      //   },
+      // ),
+      home: const NewTopicScreen()
     );
   }
 }
