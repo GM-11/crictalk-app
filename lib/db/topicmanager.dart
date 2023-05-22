@@ -6,10 +6,28 @@ class TopicManager {
       DocumentReference topicRef =
           FirebaseFirestore.instance.collection('topics').doc();
 
-      await topicRef.set({'topic': topic, 'createdAt': DateTime.now()});
+      await topicRef
+          .set({'topic': topic, 'createdAt': DateTime.now(), 'trendScore': 0});
       return 'success';
     } catch (error) {
       return error.toString();
     }
   }
+
+  // method to add coment in the topic
+  static Future<String> addComment(String topicId, String comment) async {
+    try {
+      DocumentReference topicRef =
+          FirebaseFirestore.instance.collection('topics').doc(topicId);
+
+      await topicRef.update({
+        'comments': FieldValue.arrayUnion([comment])
+      });
+      return 'success';
+    } catch (error) {
+      return error.toString();
+    }
+  }
+
+  
 }
