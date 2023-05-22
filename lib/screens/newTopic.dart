@@ -1,3 +1,4 @@
+
 import 'package:crictalk/db/topicmanager.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,23 @@ class _NewTopicScreenState extends State<NewTopicScreen> {
   void _createTopic() {
     String topic = _topicController.text.trim();
 
+    // validate that the topic is not empty, show dialog if it is
+    if (topic.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Topic cannot be empty'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
     TopicManager.createNewTopic(topic);
   }
 
@@ -24,16 +42,28 @@ class _NewTopicScreenState extends State<NewTopicScreen> {
         toolbarHeight: MediaQuery.of(context).size.height * 0.15,
         title: const Text('Topics'),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {  },),
-      body: SizedBox.expand(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            
-          ],
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _createTopic,
       ),
+      // show list of all topics in the database
+      // body: FutureBuilder<List<String>>(
+      //   future: TopicManager.fetchAllTopics(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+      //       return ListView.builder(
+      //         itemCount: snapshot.data!.length,
+      //         itemBuilder: (context, index) => ListTile(
+      //           title: Text(snapshot.data![index]),
+      //         ),
+      //       );
+      //     } else {
+      //       return const Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     }
+      //   },
+      // ),
+      
     );
   }
 }
