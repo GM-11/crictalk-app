@@ -16,8 +16,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,19 +23,32 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: StreamBuilder<User?>(
-      //   stream: _auth.authStateChanges(),
-      //   builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const CircularProgressIndicator();
-      //     } else if (snapshot.hasData) {
-      //       return const HomeScreen();
-      //     } else {
-      //       return const LoginScreen();
-      //     }
-      //   },
-      // ),
-      home: const NewTopicScreen()
+      routes: {
+        '/': (context) => const LoginScreen(),
+        '/newTopic': (context) => const NewTopicScreen(),
+      },
+      initialRoute: '/',
+    );
+  }
+}
+
+class Root extends StatelessWidget {
+  Root({super.key});
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: _auth.authStateChanges(),
+      builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasData) {
+          return const HomeScreen();
+        } else {
+          return const LoginScreen();
+        }
+      },
     );
   }
 }
