@@ -28,6 +28,4 @@ class TopicManager {
       return error.toString();
     }
   }
-
-  
 }
