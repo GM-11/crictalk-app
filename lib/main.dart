@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/': (context) => const LoginScreen(),
+        '/': (context) => Root(),
         '/newTopic': (context) => const NewTopicScreen(),
       },
       initialRoute: '/',
