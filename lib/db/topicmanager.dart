@@ -15,13 +15,23 @@ class TopicManager {
   }
 
   // method to add coment in the topic
-  static Future<String> addComment(String topicId, String comment) async {
+  static Future<String> addComment(String topicId, String comment, String author) async {
     try {
       DocumentReference topicRef =
           FirebaseFirestore.instance.collection('topics').doc(topicId);
 
+
+      // create a hashmap which has comment, author and timestamp and add it to the array
+      Map<String, dynamic> commentMap = {
+        'comment': comment,
+        'author': author,
+        'timestamp': DateTime.now()
+      };
+    
+          
+
       await topicRef.update({
-        'comments': FieldValue.arrayUnion([comment])
+        'comments': FieldValue.arrayUnion([commentMap])
       });
       return 'success';
     } catch (error) {

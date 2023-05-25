@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crictalk/db/topicmanager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -35,7 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       return Card(
                         child: ListTile(
-                          title: Text(comments[index]),
+                          title: Text(comments[index]['comment']),
+                          subtitle: Text(comments[index]['author']),
                         ),
                       );
                     },
@@ -63,7 +65,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     onPressed: () {
                                       // add the comment to the db
                                       TopicManager.addComment(
-                                          ds.id, commentController.text.trim());
+                                          ds.id,
+                                          commentController.text.trim(),
+                                          FirebaseAuth.instance.currentUser!
+                                              .displayName!);
                                       Navigator.pop(context);
                                     },
                                     child: const Text('Add'),
