@@ -46,6 +46,15 @@ class _NewTopicScreenState extends State<NewTopicScreen> {
         onPressed: _createTopic,
       ),
       // show list of all topics in the database
+      body: Column(children: [
+        // text field to input new topic name
+        TextField(
+          controller: _topicController,
+          decoration: const InputDecoration(
+            hintText: 'Enter a new topic',
+          ),
+        ),
+      ]),
       // body: FutureBuilder<List<String>>(
       //   future: TopicManager.fetchAllTopics(),
       //   builder: (context, snapshot) {
