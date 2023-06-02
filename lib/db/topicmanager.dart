@@ -12,7 +12,7 @@ class TopicManager {
         'trendScore': 0,
         'likes': 0
       });
-      return 'success';
+      return topicRef.id;
     } catch (error) {
       return error.toString();
     }

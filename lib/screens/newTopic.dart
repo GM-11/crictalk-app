@@ -1,5 +1,5 @@
-
 import 'package:crictalk/db/topicmanager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NewTopicScreen extends StatefulWidget {
@@ -11,8 +11,9 @@ class NewTopicScreen extends StatefulWidget {
 
 class _NewTopicScreenState extends State<NewTopicScreen> {
   final TextEditingController _topicController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
 
-  void _createTopic() {
+  void _createTopic() async {
     String topic = _topicController.text.trim();
 
     // validate that the topic is not empty, show dialog if it is
@@ -32,7 +33,13 @@ class _NewTopicScreenState extends State<NewTopicScreen> {
       return;
     }
 
-    TopicManager.createNewTopic(topic);
+    final String topicid = await TopicManager.createNewTopic(topic);
+
+    await TopicManager.addComment(
+      topicid,
+      _commentController.text,
+      FirebaseAuth.instance.currentUser!.displayName!,
+    );
   }
 
   @override
@@ -44,35 +51,29 @@ class _NewTopicScreenState extends State<NewTopicScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _createTopic,
+        child: const Icon(Icons.add),
       ),
       // show list of all topics in the database
-      body: Column(children: [
-        // text field to input new topic name
-        TextField(
-          controller: _topicController,
-          decoration: const InputDecoration(
-            hintText: 'Enter a new topic',
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: [
+          // text field to input new topic name
+          TextField(
+            controller: _topicController,
+            decoration: const InputDecoration(
+              hintText: 'Enter a new topic',
+            ),
           ),
-        ),
-      ]),
+          const SizedBox(height: 35.0),
+          TextField(
+            controller: _commentController,
+            decoration: const InputDecoration(
+              hintText: 'Initial comment',
+            ),
+          ),
+        ]),
+      ),
       // body: FutureBuilder<List<String>>(
-      //   future: TopicManager.fetchAllTopics(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-      //       return ListView.builder(
-      //         itemCount: snapshot.data!.length,
-      //         itemBuilder: (context, index) => ListTile(
-      //           title: Text(snapshot.data![index]),
-      //         ),
-      //       );
-      //     } else {
-      //       return const Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     }
-      //   },
-      // ),
-      
     );
   }
 }
