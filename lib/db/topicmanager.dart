@@ -33,7 +33,7 @@ class TopicManager {
         if (snapshot.exists) {
           // Update the field value
           transaction.update(documentRef, {
-            'likes': FieldValue.increment(value),
+            'likes': FieldValue.increment(1),
             'trendScore': FieldValue.increment(value)
           });
         }
