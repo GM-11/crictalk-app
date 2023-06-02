@@ -35,11 +35,19 @@ class _NewTopicScreenState extends State<NewTopicScreen> {
 
     final String topicid = await TopicManager.createNewTopic(topic);
 
-    await TopicManager.addComment(
+    final result = await TopicManager.addComment(
       topicid,
       _commentController.text,
       FirebaseAuth.instance.currentUser!.displayName!,
     );
+
+    if(result == 'success'){
+      // show a snackbar
+      
+
+
+
+    }
   }
 
   @override

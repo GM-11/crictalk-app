@@ -72,6 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         title: Text(ds['topic']),
                         elevation: 0.0,
                         centerTitle: true,
+                        actions: [
+                          IconButton(
+                              onPressed: () {
+                                TopicManager.likeTopic(ds.id);
+                              },
+                              icon: const Icon(Icons.favorite))
+                        ],
                       ),
                       body: RefreshIndicator(
                         onRefresh: () async {
@@ -101,31 +108,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       floatingActionButton: FloatingActionButton(
                         onPressed: () {
-                          // TextEditingController commentController =
-                          //     TextEditingController();
-                          // showDialog(
-                          //     context: context,
-                          //     builder: (context) => AlertDialog(
-                          //           title: const Text("Add Comment"),
-                          //           content: TextField(
-                          //             controller: commentController,
-                          //           ),
-                          //           actions: [
-                          //             TextButton(
-                          //               onPressed: () {
-                          //                 Navigator.pop(context);
-                          //               },
-                          //               child: const Text('Cancel'),
-                          //             ),
-                          //             TextButton(
-                          //               onPressed: () async {
-                          //                 showAddCommentDialog(context, ds.id);
-                          //               },
-                          //               child: const Text('Add'),
-                          //             ),
-                          //           ],
-                          //         ));
-
                           showAddCommentDialog(context, ds.id);
                         },
                         child: const Icon(Icons.add),
